@@ -35,15 +35,8 @@ public class GameMainComponent : MonoBehaviour {
 
 		if (ScoreCount.isCol) {
 
-			ScoreCount.isCol = false;
-			particle.Simulate (0.0f, true, false);
-			particle.gameObject.transform.Rotate (new Vector3 (Random.Range (-360f, 360f), 0f, 0f));
-			particle.Clear ();
-			particle.emission.SetBursts (
-				new ParticleSystem.Burst[] {
-					new ParticleSystem.Burst(0.0f,1)
-				});
-			particle.Play ();
+			StartCoroutine (Shoot ());
+
 		}
 
 		if (StartModalController.isStart) {
@@ -85,13 +78,13 @@ public class GameMainComponent : MonoBehaviour {
 		Vector3 position = player1.transform.position;
 
 		if (Input.GetKey (KeyCode.W)) {
-			if (position.y <= 23f) {
+			//if (position.y <= 23f) {
 				position.y += speed.y;
-			}
+			//}
 		} else if (Input.GetKey (KeyCode.S)) {
-			if (position.y >= -26f) {
+			//if (position.y >= -26f) {
 				position.y -= speed.y;
-			}
+			//}
 		}
 
 		player1.transform.position = position;
@@ -104,16 +97,38 @@ public class GameMainComponent : MonoBehaviour {
 		Vector3 position = player2.transform.position;
 
 		if (Input.GetKey (KeyCode.UpArrow)) {
-			if (position.y <= 23f) {
+			//if (position.y <= 23f) {
 				position.y += speed.y;
-			}
+			//}
 		} else if (Input.GetKey (KeyCode.DownArrow)) {
-			if (position.y >= -26f) {
+			//if (position.y >= -26f) {
 				position.y -= speed.y;
-			}
+			//}
 		}
 
 		player2.transform.position = position;
+
+	}
+
+	private IEnumerator Shoot()
+	{
+
+		ScoreCount.isCol = false;
+		particle.Simulate (0.0f, true, false);
+		particle.gameObject.transform.Rotate (new Vector3 (Random.Range (-360f, 360f), 0f, 0f));
+		particle.Clear ();
+		particle.emission.SetBursts (
+			new ParticleSystem.Burst[] {
+				new ParticleSystem.Burst(0.0f,1)
+			});
+
+		//particle.gravityModifier = 10f;
+
+		//particle.startSpeed = 100f;
+
+		yield return new WaitForSeconds (1.5f);
+
+		particle.Play ();
 
 	}
 
